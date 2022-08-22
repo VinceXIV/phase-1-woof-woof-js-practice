@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', e =>{
     .then(data => {
         doggos = data
         updateDogBar(doggos, getGoodDogFilter())
+        provideDoggoInfo();
     })
 
 
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', e =>{
         for(pup of doggos){
             if(pup.isGoodDog == filterStatus){
                 const domPup = document.createElement('span')
+                domPup.classList.add('doggo')
                 domPup.textContent =   pup.name
                 domPup.style.borderRadius = "1.5em"
                 domPup.style.border = '0.1em solid black'
@@ -51,5 +53,36 @@ document.addEventListener('DOMContentLoaded', e =>{
                 dogBar.append(domPup)
             }
         }
+
+        provideDoggoInfo()
+    }
+
+    function goodOrBad(booleanData){
+        if(booleanData){
+            return "Good Dog!"
+        }else{
+            return "Bad Dog!"
+        }
+    }
+
+    function provideDoggoInfo(){
+        let domDoggos = Array.from(document.getElementsByClassName('doggo'))
+        domDoggos.forEach(pup =>{
+            pup.style.cursor = 'pointer'
+            pup.addEventListener('click', e =>{
+                const globalDoggo = doggos.find(dog =>{
+                    return dog.name === pup.textContent
+                })
+
+                const domDogInfo = document.getElementById('dog-info')
+                domDogInfo.innerHTML = `
+                <h1>${globalDoggo.name}</h1>
+                <img src="${globalDoggo.image}">
+                <h2>${globalDoggo.name}</h2>
+                <button>${goodOrBad(globalDoggo.isGoodDog)}</button>`
+
+                console.log(globalDoggo.image)
+            })
+        })
     }
 })
